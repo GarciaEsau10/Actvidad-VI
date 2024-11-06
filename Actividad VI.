@@ -1,0 +1,48 @@
+pip install adafruit-circuitpython-ssd1306 smbus2
+
+import time
+import board
+import busio
+from adafruit_ssd1306 import SSD1306_I2C
+from PIL import Image, ImageDraw, ImageFont
+
+# Configuración del bus I2C
+i2c = busio.I2C(board.SCL, board.SDA)
+
+# Inicialización de la pantalla OLED
+WIDTH = 128
+HEIGHT = 64
+oled = SSD1306_I2C(WIDTH, HEIGHT, i2c)
+
+# Limpiar la pantalla
+oled.fill(0)
+oled.show()
+
+# Crear una imagen para dibujar
+image = Image.new('1', (WIDTH, HEIGHT))
+draw = ImageDraw.Draw(image)
+
+# Cargar una fuente predeterminada
+font = ImageFont.load_default()
+
+# Mensaje a mostrar
+nombre = "Esau Rafael"
+apellidos = "Garcia Cruz"
+
+# Limpiar la imagen con un rectángulo negro
+draw.rectangle((0, 0, WIDTH, HEIGHT), outline=0, fill=0)
+
+# Posiciones del texto
+x = 0
+top = 0
+
+# Dibujar el nombre y apellidos
+draw.text((x, top), nombre, font=font, fill=255)
+draw.text((x, top + 20), apellidos, font=font, fill=255)
+
+# Mostrar la imagen en la pantalla OLED
+oled.image(image)
+oled.show()
+
+# Mantener el mensaje en pantalla
+time.sleep(10)
